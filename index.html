@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nocturne Noel | A Tim Burton-Inspired Gothic Christmas Experience</title>
+  <!-- Google Fonts: Cinzel & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: {
+              950: '#05070a',
+              900: '#070a0e',
+              800: '#0d131a',
+              700: '#141d27',
+            },
+            emerald: {
+              950: '#061712',
+              900: '#0f382c',
+              800: '#16533f',
+              600: '#10b981',
+            },
+            crimson: {
+              950: '#2b060e',
+              900: '#4c0d1b',
+              800: '#6b1526',
+              600: '#991b32',
+              500: '#e11d48',
+            },
+            gold: {
+              700: '#997a15',
+              600: '#b89628',
+              500: '#d4af37',
+              400: '#e5c158',
+              300: '#f3e5ab',
+            }
+          },
+          fontFamily: {
+            cinzel: ['"Cinzel"', 'serif'],
+            sans: ['"Inter"', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Gothic Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #070a0e;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
+    }
+
+    /* Ambient Glows & Glassmorphism */
+    .glass-card {
+      background: rgba(13, 19, 26, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(212, 175, 55, 0.18);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(243, 229, 171, 0.1);
+    }
+    .glass-card:hover {
+      border-color: rgba(212, 175, 55, 0.35);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(243, 229, 171, 0.2);
+    }
+
+    /* Gothic Ornate Borders */
+    .ornate-border {
+      position: relative;
+    }
+    .ornate-border::before, .ornate-border::after {
+      content: '✦';
+      position: absolute;
+      color: #d4af37;
+      font-size: 10px;
+      opacity: 0.6;
+    }
+    .ornate-border::before { top: 6px; left: 8px; }
+    .ornate-border::after { bottom: 6px; right: 8px; }
+
+    /* Pulsing Crystal Animation */
+    @keyframes crystal-pulse {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 25px rgba(16, 185, 129, 0.35)) drop-shadow(0 0 50px rgba(212, 175, 55, 0.25));
+      }
+      50% {
+        transform: scale(1.04);
+        filter: drop-shadow(0 0 40px rgba(16, 185, 129, 0.6)) drop-shadow(0 0 70px rgba(225, 29, 72, 0.4));
+      }
+    }
+    .pulse-crystal {
+      animation: crystal-pulse 4s ease-in-out infinite;
+    }
+
+    /* Subtle Fire Flame Flickering */
+    @keyframes flicker {
+      0%, 100% { opacity: 0.88; transform: scaleY(1); }
+      25% { opacity: 0.95; transform: scaleY(1.05) skewX(1deg); }
+      50% { opacity: 0.82; transform: scaleY(0.97) skewX(-1deg); }
+      75% { opacity: 1; transform: scaleY(1.03); }
+    }
+    .flame-flicker {
+      animation: flicker 1.8s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-obsidian-950 text-slate-200 font-sans min-h-screen overflow-x-hidden selection:bg-gold-500/30 selection:text-gold-300 relative">
+
+  <!-- Interactive Dual-Physics Particle Canvas (Snow & Embers) -->
+  <canvas id="particleCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+  <!-- Ambient Color Vignette Overlays -->
+  <div class="fixed inset-0 pointer-events-none z-0 bg-gradient-to-t from-obsidian-950 via-transparent to-obsidian-950/80"></div>
+  <div class="fixed top-0 left-1/4 w-96 h-96 bg-emerald-900/20 rounded-full blur-[140px] pointer-events-none z-0"></div>
+  <div class="fixed bottom-1/4 right-1/4 w-96 h-96 bg-crimson-900/25 rounded-full blur-[150px] pointer-events-none z-0"></div>
+
+  <!-- Primary Wrapper -->
+  <div class="relative z-10 flex flex-col min-h-screen">
+
+    <!-- Top Navigation Bar -->
+    <header class="border-b border-gold-500/15 bg-obsidian-950/70 backdrop-blur-md sticky top-0 z-40 transition-all">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        
+        <!-- Brand / Identity -->
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-full border border-gold-500/30 bg-obsidian-900 flex items-center justify-center text-gold-400 font-cinzel text-lg shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+            ❦
+          </div>
+          <div>
+            <h1 class="font-cinzel text-xl sm:text-2xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-gold-400 to-amber-200">
+              NOCTURNE NOEL
+            </h1>
+            <p class="text-[10px] tracking-widest text-emerald-400/80 uppercase font-medium">A Tim Burton-Inspired Holiday Experience</p>
+          </div>
+        </div>
+
+        <!-- Controls Toolbar -->
+        <div class="flex items-center space-x-2 sm:space-x-4">
+          <!-- Audio Ambience Toggle -->
+          <button id="audioToggleBtn" class="px-3.5 py-1.5 rounded-full border border-gold-500/20 bg-obsidian-800/80 hover:bg-obsidian-700/80 text-xs text-gold-300 flex items-center space-x-2 transition-all shadow-sm group">
+            <span id="audioIcon" class="text-sm">🔇</span>
+            <span id="audioText" class="font-medium tracking-wide">Play Chimes</span>
+          </button>
+
+          <!-- Kiro Specs Modal Toggle -->
+          <button id="kiroDrawerBtn" class="px-3.5 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-950/50 hover:bg-emerald-900/50 text-xs text-emerald-300 flex items-center space-x-1.5 transition-all shadow-sm">
+            <span>⚡</span>
+            <span class="font-medium tracking-wide hidden sm:inline">Kiro Specs</span>
+          </button>
+
+          <!-- Snow Intensity Button -->
+          <button id="snowToggleBtn" class="w-9 h-9 rounded-full border border-gold-500/20 bg-obsidian-800/80 hover:bg-obsidian-700/80 flex items-center justify-center text-xs text-slate-300 transition-all" title="Toggle Blizzard Mode">
+            ❄️
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-14">
+
+      <!-- Hero Section -->
+      <section class="text-center max-w-3xl mx-auto space-y-4 pt-4">
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full border border-gold-500/20 bg-obsidian-800/60 text-gold-400 text-xs tracking-widest uppercase font-medium">
+          <span>🎃 Kiroween 2026</span>
+          <span class="text-slate-600">•</span>
+          <span class="text-emerald-400">Costume Contest Entry</span>
+        </div>
+        <h2 class="font-cinzel text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-100 leading-tight">
+          Where Haunted Darkness Meets Festive Radiance
+        </h2>
+        <p class="text-slate-400 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
+          Subverting cookie-cutter holiday templates with gothic-noir luxury. Whisper your wish into the enchanted obsidian crystal to summon your personalized dark-fairy-tale fortune.
+        </p>
+      </section>
+
+      <!-- Centerpiece: The Haunted Wishing Chamber -->
+      <section class="max-w-4xl mx-auto">
+        <div class="glass-card rounded-3xl p-6 sm:p-10 border border-gold-500/20 relative overflow-hidden ornate-border">
+          
+          <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+            
+            <!-- The Magical Crystal Ball -->
+            <div class="relative flex-shrink-0 flex items-center justify-center">
+              <div class="w-56 h-56 sm:w-64 sm:h-64 rounded-full relative flex items-center justify-center cursor-pointer group" id="crystalBallOrb">
+                <!-- Atmospheric rings -->
+                <div class="absolute inset-0 rounded-full border border-emerald-500/30 group-hover:border-gold-400/50 transition-all duration-700 animate-spin" style="animation-duration: 25s;"></div>
+                <div class="absolute inset-3 rounded-full border border-crimson-500/30 group-hover:border-crimson-400/60 transition-all duration-700 animate-spin" style="animation-duration: 18s; animation-direction: reverse;"></div>
+                
+                <!-- Core Glowing Orb -->
+                <div class="w-44 h-44 sm:w-52 sm:h-52 rounded-full pulse-crystal bg-gradient-to-tr from-obsidian-950 via-emerald-950 to-crimson-900 border-2 border-gold-400/40 flex flex-col items-center justify-center shadow-[inset_0_0_30px_rgba(212,175,55,0.4)] transition-transform duration-500">
+                  <span class="text-4xl sm:text-5xl transform group-hover:scale-110 transition-transform duration-300">🔮</span>
+                  <span class="text-[11px] font-cinzel text-gold-300 tracking-widest mt-2 uppercase">Touch the Orb</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Interactive Wishing Controls -->
+            <div class="flex-grow space-y-5 w-full">
+              <div class="space-y-1">
+                <span class="text-xs font-cinzel text-emerald-400 uppercase tracking-widest">Interactive Oracle</span>
+                <h3 class="font-cinzel text-2xl font-bold text-slate-100">Whisper Your Holiday Wish</h3>
+                <p class="text-xs text-slate-400">Pour your deepest festive longing into the shadows. The gothic oracle will reveal your bespoke verse.</p>
+              </div>
+
+              <!-- Input Form -->
+              <div class="space-y-3">
+                <div class="relative">
+                  <input type="text" id="wishInput" placeholder="e.g. Courage to finish my dream project, peace in the cold winter..." 
+                    class="w-full bg-obsidian-900/90 border border-gold-500/25 rounded-xl px-4 py-3.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-gold-400 focus:ring-1 focus:ring-gold-400/50 transition-all shadow-inner">
+                </div>
+
+                <div class="flex flex-wrap gap-2">
+                  <button type="button" class="quick-prompt-btn px-2.5 py-1 rounded-lg bg-obsidian-800 border border-slate-700/60 hover:border-gold-500/40 text-[11px] text-slate-300 transition-all" data-prompt="A touch of forbidden inspiration">
+                    ✨ Forbidden Inspiration
+                  </button>
+                  <button type="button" class="quick-prompt-btn px-2.5 py-1 rounded-lg bg-obsidian-800 border border-slate-700/60 hover:border-gold-500/40 text-[11px] text-slate-300 transition-all" data-prompt="Endless moonlight and deep focus">
+                    🌙 Moonlit Focus
+                  </button>
+                  <button type="button" class="quick-prompt-btn px-2.5 py-1 rounded-lg bg-obsidian-800 border border-slate-700/60 hover:border-gold-500/40 text-[11px] text-slate-300 transition-all" data-prompt="Warmth for weary gothic souls">
+                    🍷 Hearth & Warmth
+                  </button>
+                </div>
+
+                <button id="summonFortuneBtn" class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-emerald-900 via-crimson-800 to-obsidian-900 hover:from-emerald-800 hover:via-crimson-700 hover:to-obsidian-800 border border-gold-500/40 text-gold-200 font-cinzel font-bold text-sm tracking-widest uppercase transition-all shadow-[0_0_20px_rgba(212,175,55,0.2)] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] flex items-center justify-center space-x-2">
+                  <span>✦ Summon Gothic Blessing ✦</span>
+                </button>
+              </div>
+
+              <!-- Generated Fortune Card Display -->
+              <div id="fortuneCard" class="hidden rounded-2xl bg-obsidian-900/90 border border-gold-400/30 p-5 space-y-3 shadow-lg relative ornate-border transition-all animate-fade-in">
+                <div class="flex justify-between items-center border-b border-gold-500/15 pb-2">
+                  <span class="text-[11px] font-cinzel text-gold-400 uppercase tracking-widest" id="cardTitle">Nocturne Card #01</span>
+                  <button id="copyVerseBtn" class="text-xs text-slate-400 hover:text-gold-300 transition-colors flex items-center space-x-1">
+                    <span>📋</span>
+                    <span>Copy Card</span>
+                  </button>
+                </div>
+                <p id="fortunePoem" class="font-cinzel text-sm sm:text-base text-slate-200 italic leading-relaxed whitespace-pre-line text-center py-2">
+                  "When midnight bells in frosted towers chime,
+The shadowed spirits dance in rhythm and rhyme.
+Your winter wish is woven in crimson lace,
+A gentle dark embrace in time and space."
+                </p>
+                <div class="text-center pt-1 border-t border-gold-500/10">
+                  <span class="text-[10px] text-emerald-400 tracking-wider uppercase font-medium">Bespoke Verse for: </span>
+                  <span id="userWishEcho" class="text-[11px] text-slate-300 font-serif">"Forbidden Inspiration"</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Atmospheric Interactive Triad Showcase -->
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Feature Card 1: Clockwork Christmas Countdown -->
+        <div class="glass-card rounded-2xl p-6 border border-gold-500/15 flex flex-col justify-between space-y-6 relative group">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-2xl">⏳</span>
+              <span class="text-[10px] uppercase font-cinzel text-emerald-400 tracking-wider">Victorian Engine</span>
+            </div>
+            <h4 class="font-cinzel text-lg font-bold text-slate-100">Jack's Clockwork Countdown</h4>
+            <p class="text-xs text-slate-400">Precision pendulum tracking every gear rotation until the Christmas midnight eclipse.</p>
+          </div>
+
+          <!-- Live Countdown Readout -->
+          <div class="grid grid-cols-4 gap-2 text-center py-3 bg-obsidian-900/80 rounded-xl border border-slate-800">
+            <div>
+              <span id="countDays" class="font-cinzel text-xl font-bold text-gold-300">45</span>
+              <span class="block text-[9px] uppercase tracking-wider text-slate-500 mt-0.5">Days</span>
+            </div>
+            <div>
+              <span id="countHours" class="font-cinzel text-xl font-bold text-gold-300">12</span>
+              <span class="block text-[9px] uppercase tracking-wider text-slate-500 mt-0.5">Hours</span>
+            </div>
+            <div>
+              <span id="countMins" class="font-cinzel text-xl font-bold text-gold-300">38</span>
+              <span class="block text-[9px] uppercase tracking-wider text-slate-500 mt-0.5">Mins</span>
+            </div>
+            <div>
+              <span id="countSecs" class="font-cinzel text-xl font-bold text-emerald-400">19</span>
+              <span class="block text-[9px] uppercase tracking-wider text-slate-500 mt-0.5">Secs</span>
+            </div>
+          </div>
+
+          <div class="text-[11px] text-slate-500 text-center italic">
+            "Tick-tock, the skeleton clock marks the feast..."
+          </div>
+        </div>
+
+        <!-- Feature Card 2: Spectral Hearth Interactive Chamber -->
+        <div class="glass-card rounded-2xl p-6 border border-gold-500/15 flex flex-col justify-between space-y-6 relative group">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-2xl">🕯️</span>
+              <span class="text-[10px] uppercase font-cinzel text-crimson-400 tracking-wider">Ghostflame Altar</span>
+            </div>
+            <h4 class="font-cinzel text-lg font-bold text-slate-100">The Spectral Hearth</h4>
+            <p class="text-xs text-slate-400">Shift the hearth fire between ghostly emerald specters and deep velvet crimson warmth.</p>
+          </div>
+
+          <!-- Fireplace Visualizer -->
+          <div id="hearthVisualizer" class="h-28 rounded-xl bg-obsidian-950 border border-slate-800 flex items-center justify-center relative overflow-hidden shadow-inner transition-colors duration-700">
+            <div id="hearthFlameGlow" class="w-32 h-20 rounded-full blur-2xl bg-emerald-600/30 transition-all duration-700"></div>
+            <div class="flame-flicker text-4xl select-none z-10" id="hearthFlameIcon">🔥</div>
+          </div>
+
+          <!-- Flame Mode Controller -->
+          <div class="flex rounded-lg bg-obsidian-900 p-1 border border-slate-800">
+            <button id="flameEmeraldBtn" class="flex-1 py-1.5 text-xs font-medium rounded-md bg-emerald-900/60 text-emerald-300 border border-emerald-500/30 transition-all">
+              Emerald Chill
+            </button>
+            <button id="flameCrimsonBtn" class="flex-1 py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-crimson-300 transition-all">
+              Crimson Heat
+            </button>
+          </div>
+        </div>
+
+        <!-- Feature Card 3: The Cursed Mistletoe Lore -->
+        <div class="glass-card rounded-2xl p-6 border border-gold-500/15 flex flex-col justify-between space-y-6 relative group">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-2xl">🥀</span>
+              <span class="text-[10px] uppercase font-cinzel text-gold-400 tracking-wider">Gothic Lore</span>
+            </div>
+            <h4 class="font-cinzel text-lg font-bold text-slate-100">The Cursed Mistletoe</h4>
+            <p class="text-xs text-slate-400">An ancient Victorian legend of lovers bound beneath thorny black boughs.</p>
+          </div>
+
+          <div class="p-3.5 bg-obsidian-900/80 rounded-xl border border-slate-800 text-xs text-slate-300 leading-relaxed italic" id="loreBox">
+            "He who stands beneath the silvered thorns shall trade one mortal regret for a winter blessing that never fades."
+          </div>
+
+          <button id="cycleLoreBtn" class="w-full py-2 rounded-xl bg-obsidian-800 hover:bg-obsidian-700 border border-gold-500/20 text-xs text-gold-300 font-cinzel tracking-wider uppercase transition-all">
+            ✦ Uncover Secret Lore ✦
+          </button>
+        </div>
+
+      </section>
+
+      <!-- Kiro Architecture & Design System Showcase -->
+      <section class="glass-card rounded-3xl p-6 sm:p-8 border border-gold-500/15 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gold-500/15 pb-4">
+          <div>
+            <span class="text-xs font-cinzel text-emerald-400 uppercase tracking-widest">Engineering & Architecture</span>
+            <h3 class="font-cinzel text-2xl font-bold text-slate-100">How Kiro Built Nocturne Noel</h3>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="px-2.5 py-1 rounded bg-obsidian-900 border border-gold-500/20 text-[10px] font-mono text-gold-400">/.kiro/specs</span>
+            <span class="px-2.5 py-1 rounded bg-obsidian-900 border border-emerald-500/20 text-[10px] font-mono text-emerald-400">/.kiro/hooks</span>
+            <span class="px-2.5 py-1 rounded bg-obsidian-900 border border-crimson-500/20 text-[10px] font-mono text-crimson-400">/.kiro/steering</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="space-y-2 p-4 rounded-xl bg-obsidian-900/60 border border-slate-800/80">
+            <h4 class="font-cinzel text-sm font-bold text-gold-300 flex items-center space-x-1.5">
+              <span>📋</span>
+              <span>1. Kiro Specs</span>
+            </h4>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Design tokens, color curves, and particle physics constants were declared formally in <code class="text-gold-400">specs/design-tokens.yaml</code> before drafting UI code.
+            </p>
+          </div>
+
+          <div class="space-y-2 p-4 rounded-xl bg-obsidian-900/60 border border-slate-800/80">
+            <h4 class="font-cinzel text-sm font-bold text-emerald-300 flex items-center space-x-1.5">
+              <span>🪝</span>
+              <span>2. Agent Hooks</span>
+            </h4>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Automated git hooks in <code class="text-emerald-400">hooks/quality-check.sh</code> audited color contrast against WCAG AA on obsidian glass and tested for particle memory leaks on every save.
+            </p>
+          </div>
+
+          <div class="space-y-2 p-4 rounded-xl bg-obsidian-900/60 border border-slate-800/80">
+            <h4 class="font-cinzel text-sm font-bold text-crimson-300 flex items-center space-x-1.5">
+              <span>🧭</span>
+              <span>3. Steering Documents</span>
+            </h4>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Steering guidelines in <code class="text-crimson-400">steering/gothic-aesthetic-guide.md</code> ensured Kiro synthesized pure Web Audio API sounds without relying on external network assets.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gold-500/15 bg-obsidian-950 py-8 text-center text-xs text-slate-500 space-y-2">
+      <div class="font-cinzel text-gold-400/80 tracking-widest uppercase">Nocturne Noel • Kiroween 2026 Hackathon</div>
+      <p>Crafted with Kiro AI IDE • Public Open Source under MIT License</p>
+    </footer>
+
+  </div>
+
+  <!-- Kiro Specs Modal (In-Page Drawer) -->
+  <div id="kiroModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="glass-card rounded-2xl max-w-2xl w-full p-6 sm:p-8 border border-gold-500/30 space-y-5 relative max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-gold-500/20 pb-3">
+        <h3 class="font-cinzel text-lg font-bold text-gold-300">⚡ Kiro Architecture Deep Dive</h3>
+        <button id="closeModalBtn" class="text-slate-400 hover:text-slate-100 text-lg">✕</button>
+      </div>
+      <div class="space-y-3 text-xs text-slate-300">
+        <p>This application was architected using Kiro's three foundational pillars:</p>
+        <div class="p-3 bg-obsidian-950 rounded-lg border border-slate-800 font-mono text-[11px] text-slate-300 space-y-1">
+          <div class="text-gold-400"># /.kiro/specs/design-tokens.yaml</div>
+          <div>theme: "luxury-gothic-noir"</div>
+          <div>palette: obsidian_deep: "#070a0e", emerald: "#0f382c", crimson: "#6b1526", gold: "#d4af37"</div>
+          <div>motion: snow_density: 75, crystal_pulse: "4s"</div>
+        </div>
+        <p class="text-slate-400">Every design choice, easing curve, and procedural audio frequency was guided by Kiro's agentic workflow.</p>
+      </div>
+      <div class="text-right">
+        <button id="modalDoneBtn" class="px-5 py-2 rounded-xl bg-gold-600/30 hover:bg-gold-600/50 text-gold-300 border border-gold-500/30 font-cinzel text-xs uppercase tracking-wider transition-all">
+          Close Inspection
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive JavaScript Engine -->
+  <script>
+    // -------------------------------------------------------------
+    // 1. Dual-Physics Particle Canvas (Snow & Rising Golden Embers)
+    // -------------------------------------------------------------
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    let snowCount = 65;
+    let emberCount = 30;
+    let particles = [];
+    let isBlizzard = false;
+
+    function initParticles() {
+      particles = [];
+      // Snow Particles
+      for (let i = 0; i < snowCount; i++) {
+        particles.push({
+          type: 'snow',
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 2 + 0.8,
+          density: Math.random() * snowCount,
+          speedY: Math.random() * 1.2 + 0.5,
+          speedX: Math.random() * 0.6 - 0.3,
+          opacity: Math.random() * 0.7 + 0.2
+        });
+      }
+      // Rising Ember Particles
+      for (let i = 0; i < emberCount; i++) {
+        particles.push({
+          type: 'ember',
+          x: Math.random() * width,
+          y: height + Math.random() * 50,
+          radius: Math.random() * 1.5 + 0.6,
+          speedY: -(Math.random() * 0.9 + 0.4),
+          speedX: (Math.random() - 0.5) * 0.8,
+          opacity: Math.random() * 0.8 + 0.2,
+          color: Math.random() > 0.4 ? 'rgba(212, 175, 55, ' : 'rgba(225, 29, 72, '
+        });
+      }
+    }
+
+    function renderParticles() {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < particles.length; i++) {
+        let p = particles[i];
+
+        if (p.type === 'snow') {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(226, 232, 240, ${p.opacity})`;
+          ctx.fill();
+
+          p.y += p.speedY * (isBlizzard ? 2.5 : 1);
+          p.x += p.speedX + (isBlizzard ? 1.2 : 0);
+
+          if (p.y > height) {
+            p.y = -10;
+            p.x = Math.random() * width;
+          }
+          if (p.x > width) p.x = 0;
+          if (p.x < 0) p.x = width;
+
+        } else if (p.type === 'ember') {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color + p.opacity + ')';
+          ctx.shadowBlur = 6;
+          ctx.shadowColor = '#d4af37';
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          p.y += p.speedY;
+          p.x += p.speedX;
+          p.opacity -= 0.002;
+
+          if (p.y < 0 || p.opacity <= 0) {
+            p.y = height + 10;
+            p.x = Math.random() * width;
+            p.opacity = Math.random() * 0.8 + 0.2;
+          }
+        }
+      }
+      requestAnimationFrame(renderParticles);
+    }
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      initParticles();
+    });
+
+    initParticles();
+    requestAnimationFrame(renderParticles);
+
+    // -------------------------------------------------------------
+    // 2. Procedural Web Audio Engine (Chimes & Gothic Drone)
+    // -------------------------------------------------------------
+    let audioCtx = null;
+    let isAudioPlaying = false;
+    let droneOsc = null;
+    let droneGain = null;
+
+    const audioToggleBtn = document.getElementById('audioToggleBtn');
+    const audioIcon = document.getElementById('audioIcon');
+    const audioText = document.getElementById('audioText');
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playGothicChime(freq = 523.25) {
+      if (!audioCtx) initAudio();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      // Exponential decay like a music box bell
+      gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.2);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + 2.2);
+    }
+
+    function toggleAtmosphericDrone() {
+      initAudio();
+      if (!isAudioPlaying) {
+        // Start warm drone
+        droneOsc = audioCtx.createOscillator();
+        droneGain = audioCtx.createGain();
+
+        droneOsc.type = 'triangle';
+        droneOsc.frequency.setValueAtTime(110, audioCtx.currentTime); // Low A
+
+        droneGain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+        droneGain.gain.linearRampToValueAtTime(0.06, audioCtx.currentTime + 3);
+
+        droneOsc.connect(droneGain);
+        droneGain.connect(audioCtx.destination);
+
+        droneOsc.start();
+        isAudioPlaying = true;
+        audioIcon.textContent = '🔊';
+        audioText.textContent = 'Chimes Active';
+        playGothicChime(659.25); // E5
+      } else {
+        // Stop drone
+        if (droneGain) {
+          droneGain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 1);
+          setTimeout(() => {
+            if (droneOsc) {
+              droneOsc.stop();
+              droneOsc.disconnect();
+            }
+          }, 1000);
+        }
+        isAudioPlaying = false;
+        audioIcon.textContent = '🔇';
+        audioText.textContent = 'Play Chimes';
+      }
+    }
+
+    audioToggleBtn.addEventListener('click', toggleAtmosphericDrone);
+
+    // Blizzard Toggle
+    const snowToggleBtn = document.getElementById('snowToggleBtn');
+    snowToggleBtn.addEventListener('click', () => {
+      isBlizzard = !isBlizzard;
+      snowToggleBtn.classList.toggle('border-gold-400');
+      snowToggleBtn.classList.toggle('bg-gold-500/20');
+      if (isBlizzard) {
+        snowCount = 130;
+        initParticles();
+      } else {
+        snowCount = 65;
+        initParticles();
+      }
+    });
+
+    // -------------------------------------------------------------
+    // 3. Interactive Wishing Crystal & Gothic Poem Generator
+    // -------------------------------------------------------------
+    const gothicPoems = [
+      {
+        title: "Nocturne Card #01 • The Velvet Eclipse",
+        verse: "When midnight bells in frosted towers chime,\nThe shadowed spirits dance in rhythm and rhyme.\nYour winter wish is woven in crimson lace,\nA gentle dark embrace in time and space."
+      },
+      {
+        title: "Nocturne Card #02 • Thorns & Gold",
+        verse: "Beneath the boughs of obsidian pine,\nA secret star begins its silver shine.\nFear not the frost that bites the lonely night,\nFor from the crypt of winter blooms delight."
+      },
+      {
+        title: "Nocturne Card #03 • Jack's Solstice Riddle",
+        verse: "Pumpkins whisper to the holly crown,\nA touch of gloom upon the festive town.\nWhat you desire is already carved in stone,\nYou walk with wonder, never quite alone."
+      },
+      {
+        title: "Nocturne Card #04 • Crystalline Reverie",
+        verse: "Snowflakes settle on the velvet stone,\nA solemn song where warmth is softly sown.\nThe clockwork turning of the haunted year\nBrings peace to every sorrow, doubt, and fear."
+      },
+      {
+        title: "Nocturne Card #05 • The Alchemist's Hearth",
+        verse: "Stoke the embers of the secret fire,\nTurn silver smoke into your soul's desire.\nA gothic feast of mystery and song,\nWhere weary wandering dreamers all belong."
+      }
+    ];
+
+    let currentCardIndex = 0;
+    const wishInput = document.getElementById('wishInput');
+    const summonFortuneBtn = document.getElementById('summonFortuneBtn');
+    const crystalBallOrb = document.getElementById('crystalBallOrb');
+    const fortuneCard = document.getElementById('fortuneCard');
+    const cardTitle = document.getElementById('cardTitle');
+    const fortunePoem = document.getElementById('fortunePoem');
+    const userWishEcho = document.getElementById('userWishEcho');
+    const copyVerseBtn = document.getElementById('copyVerseBtn');
+
+    function triggerCrystalFortune() {
+      const userWish = wishInput.value.trim() || "A peaceful, mysterious holiday season";
+      
+      // Play ascending chime chord
+      playGothicChime(440);
+      setTimeout(() => playGothicChime(554.37), 120);
+      setTimeout(() => playGothicChime(659.25), 240);
+
+      // Card data
+      const selected = gothicPoems[currentCardIndex % gothicPoems.length];
+      currentCardIndex++;
+
+      cardTitle.textContent = selected.title;
+      fortunePoem.textContent = selected.verse;
+      userWishEcho.textContent = `"${userWish}"`;
+
+      fortuneCard.classList.remove('hidden');
+      fortuneCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    summonFortuneBtn.addEventListener('click', triggerCrystalFortune);
+    crystalBallOrb.addEventListener('click', triggerCrystalFortune);
+
+    // Quick Prompt Buttons
+    document.querySelectorAll('.quick-prompt-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        wishInput.value = btn.dataset.prompt;
+        playGothicChime(587.33);
+      });
+    });
+
+    // Copy Verse Button
+    copyVerseBtn.addEventListener('click', () => {
+      const textToCopy = `${cardTitle.textContent}\n\n${fortunePoem.textContent}\n\nWish: ${userWishEcho.textContent}\n- Nocturne Noel (Kiroween 2026)`;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(textToCopy);
+        } else {
+          const ta = document.createElement('textarea');
+          ta.value = textToCopy;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        }
+        copyVerseBtn.innerHTML = '<span>✓</span><span>Copied!</span>';
+        setTimeout(() => {
+          copyVerseBtn.innerHTML = '<span>📋</span><span>Copy Card</span>';
+        }, 2000);
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    // -------------------------------------------------------------
+    // 4. Clockwork Christmas Countdown Timer
+    // -------------------------------------------------------------
+    function updateCountdown() {
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      let christmas = new Date(currentYear, 11, 25, 0, 0, 0); // Dec 25
+
+      if (now > christmas) {
+        christmas = new Date(currentYear + 1, 11, 25, 0, 0, 0);
+      }
+
+      const diff = christmas - now;
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById('countDays').textContent = days;
+      document.getElementById('countHours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('countMins').textContent = String(mins).padStart(2, '0');
+      document.getElementById('countSecs').textContent = String(secs).padStart(2, '0');
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // -------------------------------------------------------------
+    // 5. Spectral Hearth Flame Controller
+    // -------------------------------------------------------------
+    const flameEmeraldBtn = document.getElementById('flameEmeraldBtn');
+    const flameCrimsonBtn = document.getElementById('flameCrimsonBtn');
+    const hearthFlameGlow = document.getElementById('hearthFlameGlow');
+    const hearthFlameIcon = document.getElementById('hearthFlameIcon');
+
+    flameEmeraldBtn.addEventListener('click', () => {
+      hearthFlameGlow.className = "w-32 h-20 rounded-full blur-2xl bg-emerald-600/30 transition-all duration-700";
+      hearthFlameIcon.textContent = "🔥";
+      flameEmeraldBtn.className = "flex-1 py-1.5 text-xs font-medium rounded-md bg-emerald-900/60 text-emerald-300 border border-emerald-500/30 transition-all";
+      flameCrimsonBtn.className = "flex-1 py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-crimson-300 transition-all";
+      playGothicChime(392); // G4
+    });
+
+    flameCrimsonBtn.addEventListener('click', () => {
+      hearthFlameGlow.className = "w-32 h-20 rounded-full blur-2xl bg-crimson-600/40 transition-all duration-700";
+      hearthFlameIcon.textContent = "🕯️";
+      flameCrimsonBtn.className = "flex-1 py-1.5 text-xs font-medium rounded-md bg-crimson-900/60 text-crimson-300 border border-crimson-500/30 transition-all";
+      flameEmeraldBtn.className = "flex-1 py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-emerald-300 transition-all";
+      playGothicChime(440); // A4
+    });
+
+    // -------------------------------------------------------------
+    // 6. Cursed Mistletoe Lore Carousel
+    // -------------------------------------------------------------
+    const secretLores = [
+      "He who stands beneath the silvered thorns shall trade one mortal regret for a winter blessing that never fades.",
+      "The bells of Halloweentown only toll when frost touches the gargoyle's brow at twilight.",
+      "In the ancient woods, the Yuletide Jack carved stars from black obsidian to guide wandering ghosts home."
+    ];
+    let loreIndex = 0;
+    const loreBox = document.getElementById('loreBox');
+    const cycleLoreBtn = document.getElementById('cycleLoreBtn');
+
+    cycleLoreBtn.addEventListener('click', () => {
+      loreIndex = (loreIndex + 1) % secretLores.length;
+      loreBox.textContent = `"${secretLores[loreIndex]}"`;
+      playGothicChime(523.25);
+    });
+
+    // -------------------------------------------------------------
+    // 7. Kiro Architecture Modal Handlers
+    // -------------------------------------------------------------
+    const kiroDrawerBtn = document.getElementById('kiroDrawerBtn');
+    const kiroModal = document.getElementById('kiroModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalDoneBtn = document.getElementById('modalDoneBtn');
+
+    kiroDrawerBtn.addEventListener('click', () => {
+      kiroModal.classList.remove('hidden');
+      playGothicChime(523.25);
+    });
+    closeModalBtn.addEventListener('click', () => kiroModal.classList.add('hidden'));
+    modalDoneBtn.addEventListener('click', () => kiroModal.classList.add('hidden'));
+  </script>
+</body>
+</html>
