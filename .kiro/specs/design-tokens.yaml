@@ -1,0 +1,24 @@
+# Kiro Spec: Design Tokens for Nocturne Noel (Gothic Christmas UI/UX)
+version: "1.0.0"
+theme: "luxury-gothic-noir"
+palette:
+  background:
+    obsidian_deep: "#070a0e"
+    obsidian_card: "#0d131a"
+    obsidian_overlay: "rgba(13, 19, 26, 0.82)"
+  accents:
+    emerald_velvet: "#0f382c"
+    emerald_glow: "#10b981"
+    crimson_velvet: "#6b1526"
+    crimson_glow: "#e11d48"
+    antique_gold: "#d4af37"
+    gold_highlight: "#f3e5ab"
+    frost_white: "#e2e8f0"
+typography:
+  headings: "'Cinzel', 'Playfair Display', serif"
+  body: "'Inter', system-ui, sans-serif"
+motion:
+  snow_particle_density: 75
+  ember_particle_density: 35
+  crystal_pulse_duration: "3.2s"
+  easing: "cubic-bezier(0.16, 1, 0.3, 1)"
